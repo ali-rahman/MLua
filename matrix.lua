@@ -4,35 +4,27 @@ matrix.__index = matrix
 matrix.__add = function(lhs,rhs)
 	local t_m=lhs.size[1]
 	local t_n=lhs.size[2]
-	if(t_m==rhs.size[1] and t_n==rhs.size[2]) then
-		local sum=matrix.new(t_m,t_n)
-		for i=1,t_m do
-			for j=1,t_n do
-				sum.mat[i][j]=lhs.mat[i][j] + rhs.mat[i][j]
-			end
+	assert((t_m==rhs.size[1] and t_n==rhs.size[2]),"Input matrices have size mismatch")
+	local sum=matrix.new(t_m,t_n)
+	for i=1,t_m do
+		for j=1,t_n do
+			sum.mat[i][j]=lhs.mat[i][j] + rhs.mat[i][j]
 		end
-		return sum
-	else
-		print("Input matrices have size mismatch")
-		return nil
 	end
+	return sum
 end
 --Metamethod for overloading the - operator for our metatable
 matrix.__sub = function(lhs,rhs)
 	local t_m=lhs.size[1]
 	local t_n=lhs.size[2]
-	if(t_m==rhs.size[1] and t_n==rhs.size[2]) then
-		local sum=matrix.new(t_m,t_n)
-		for i=1,t_m do
-			for j=1,t_n do
-				sum.mat[i][j]=lhs.mat[i][j] - rhs.mat[i][j]
-			end
+	assert((t_m==rhs.size[1] and t_n==rhs.size[2]),"Input matrices have size mismatch")
+	local sum=matrix.new(t_m,t_n)
+	for i=1,t_m do
+		for j=1,t_n do
+			sum.mat[i][j]=lhs.mat[i][j] - rhs.mat[i][j]
 		end
-		return sum
-	else
-		print("Input matrices have size mismatch")
-		return nil
 	end
+	return sum
 end
 --Metamethod for overloading the * operator for our metatable
 matrix.__mul = function(mat1,mat2)
@@ -40,25 +32,31 @@ matrix.__mul = function(mat1,mat2)
 	local n1=mat1.size[2]
 	local m2=mat2.size[1]
 	local n2=mat2.size[2]
-	if(n1==m2) then
-		local result=matrix.new(m1,n2)
-		--local square_check=isPowerofTwo(m1)
-		for i=1, m1 do
-			for j=1,n2 do
-				for k=1,m2 do
-					result.mat[i][j] = result.mat[i][j]+(mat1.mat[i][k] * mat2.mat[k][j])
-				end
+	assert(n1==m2,"Dimension mismatch for matrix multiplication")
+	local result=matrix.new(m1,n2)
+	--local square_check=isPowerofTwo(m1)
+	for i=1, m1 do
+		for j=1,n2 do
+			for k=1,m2 do
+				result.mat[i][j] = result.mat[i][j]+(mat1.mat[i][k] * mat2.mat[k][j])
 			end
 		end
-		return result
-	else
-		print("Dimension mismatch for matrix multiplication")
-		return nil
 	end
+	return result
 end
 
 matrix.__concat = function(mat1,mat2)
-
+	assert(mat1.size[1]==mat2.size[1],"Horizontal concatenation failed. Matrices should have equal number of rows.")
+	local result = matrix.new(mat1.size[1],mat1.size[2]+mat2.size[2])
+	for i=1,result.size[1] do
+		for j=1,mat1.size[2] do
+			result.mat[i][j] = mat1.mat[i][j]
+		end
+		for j=1,mat2.size[2] do
+			result.mat[i][j+(mat1.size[2])] = mat2.mat[i][j]
+		end
+	end
+	return result
 end
 
 matrix.__tostring = function(mat1)
@@ -114,11 +112,12 @@ function matrix.eye(m)
 	end
 	return self
 end
+--Function to provide alternate syntax for returning a matrix element
 function matrix.element(self,tab1)
 	result=self.mat[tab1[1]][tab1[2]]
 	return result
 end
-
+--Returns sub-matrix based on input row and column ranges
 function matrix.subset(self,m,n)
 	local d_row=(m[2]-m[1])+1
 	local d_col=(n[2]-n[1])+1
@@ -168,3 +167,7 @@ print(B)
 local C=B:transpose()
 print("Matrix C:")
 print(C)
+local D=A .. B
+print("Matrix D:")
+print("Size:\t"..D.size[1].." x "..D.size[2])
+print(D)

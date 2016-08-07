@@ -71,7 +71,7 @@ matrix.__tostring = function(mat1)
 	end
 	return str
 end
-
+--Creates a matrix of m x n dimensions. Elements are set to zero
 function matrix.new(m,n)
 	local self=setmetatable({},matrix)
 	self.size={m,n}
@@ -84,6 +84,7 @@ function matrix.new(m,n)
 	end
 	return self
 end
+--Creates a matrix of m x n dimensions with all elements set to 1.
 function matrix.one(m,n)
 	local self=setmetatable({},matrix)
 	self.size={m,n}
@@ -96,6 +97,7 @@ function matrix.one(m,n)
 	end
 	return self
 end
+--Creates an identity matrix of dimensions m x m.
 function matrix.eye(m)
 	local self=setmetatable({},matrix)
 	self.size={m,m}
@@ -128,6 +130,17 @@ function matrix.subset(self,m,n)
 	end
 	return result
 end
+function matrix.transpose(self)
+	local m=self.size[2]
+	local n=self.size[1]
+	local t=matrix.new(m,n)
+	for i=1,m do
+		for j=1,n do
+			t.mat[i][j]=self.mat[j][i]
+		end
+	end
+	return t
+end
 
 function isPowerofTwo(n)
 	while ((n%2==0) and n>1) do
@@ -152,8 +165,6 @@ print(A)
 local B=Z*A
 print("B=")
 print(B)
-local C=B:subset({1,2},{3,3})
-local E=matrix.eye(5)
-print("Matrix E:")
-print(E)
-
+local C=B:transpose()
+print("Matrix C:")
+print(C)

@@ -114,3 +114,50 @@ function cmath.atan(parameter)
 	end
 end
 
+--Calculates and returns the sine of input parameter
+function cmath.sin(parameter)
+	local ty=type(parameter)
+	if(ty=="table") then
+		local result = matrix.new(parameter.size[1],parameter.size[2])
+		for i=1, parameter.size[1] do
+			for j=1, parameter.size[2] do
+				result.mat[i][j]=math.sin(parameter.mat[i][j])
+			end
+		end
+		return result
+	else
+		return math.sin(parameter)
+	end
+end
+
+--Calculates and returns the cosine of input parameter
+function cmath.cos(parameter)
+	local ty=type(parameter)
+	if(ty=="table") then
+		local result = matrix.new(parameter.size[1],parameter.size[2])
+		for i=1, parameter.size[1] do
+			for j=1, parameter.size[2] do
+				result.mat[i][j]=math.cos(parameter.mat[i][j])
+			end
+		end
+		return result
+	else
+		return math.cos(parameter)
+	end
+end
+
+--Calculates and returns the tangent of input parameter
+function cmath.tan(parameter)
+	local ty=type(parameter)
+	if(ty=="table") then
+		local result = matrix.new(parameter.size[1],parameter.size[2])
+		for i=1, parameter.size[1] do
+			for j=1, parameter.size[2] do
+				result.mat[i][j]=math.tan(parameter.mat[i][j])
+			end
+		end
+		return result
+	else
+		return math.tan(parameter)
+	end
+end

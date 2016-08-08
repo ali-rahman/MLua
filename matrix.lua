@@ -151,7 +151,8 @@ function isPowerofTwo(n)
 		return false
 	end
 end
-
+return matrix
+--[[
 local X=matrix.new(2,2)
 local Y=matrix.new(2,2)
 X.mat[1][1]=9
@@ -171,3 +172,4 @@ local D=A .. B
 print("Matrix D:")
 print("Size:\t"..D.size[1].." x "..D.size[2])
 print(D)
+]]--

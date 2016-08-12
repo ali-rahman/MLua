@@ -161,3 +161,5 @@ function cmath.tan(parameter)
 		return math.tan(parameter)
 	end
 end
+
+return cmath

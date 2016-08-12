@@ -26,20 +26,45 @@ matrix.__sub = function(lhs,rhs)
 	end
 	return sum
 end
+
+function matrix_scalar_multiplication(mat1,scalar)
+	local m=mat1.size[1]
+	local n=mat1.size[2]
+	local result = matrix.new(m,n)
+	for i=1, m do
+		for j=1,n do
+			result.mat[i][j]=mat1.mat[i][j]*scalar
+		end
+	end
+	return result
+end
+
 --Metamethod for overloading the * operator for our metatable
 matrix.__mul = function(mat1,mat2)
-	local m1=mat1.size[1]
-	local n1=mat1.size[2]
-	local m2=mat2.size[1]
-	local n2=mat2.size[2]
-	assert(n1==m2,"Dimension mismatch for matrix multiplication")
-	local result=matrix.new(m1,n2)
-	--local square_check=isPowerofTwo(m1)
-	for i=1, m1 do
-		for j=1,n2 do
-			for k=1,m2 do
-				result.mat[i][j] = result.mat[i][j]+(mat1.mat[i][k] * mat2.mat[k][j])
+	local result
+	if((type(mat1)=="table") and (type(mat2)=="table")) then
+		local m1=mat1.size[1]
+		local n1=mat1.size[2]
+		local m2=mat2.size[1]
+		local n2=mat2.size[2]
+
+		assert(n1==m2,"Dimension mismatch for matrix multiplication")
+		result=matrix.new(m1,n2)
+		--local square_check=isPowerofTwo(m1)
+		for i=1, m1 do
+			for j=1,n2 do
+				for k=1,m2 do
+					result.mat[i][j] = result.mat[i][j]+(mat1.mat[i][k] * mat2.mat[k][j])
+				end
 			end
+		end
+	else
+		if(type(mat1)=="table" and type(mat2)~="table") then
+			result=matrix.new(mat1.size[1],mat1.size[2])
+			result=matrix_scalar_multiplication(mat1,mat2)
+		elseif((type(mat1)~="table") and (type(mat2)=="table")) then
+			result=matrix.new(mat2.size[1],mat2.size[2])
+			result=matrix_scalar_multiplication(mat2,mat1)
 		end
 	end
 	return result
@@ -168,8 +193,6 @@ function toMatrix(param)
 	end
 	return result
 end
-
-
 
 
 --[[

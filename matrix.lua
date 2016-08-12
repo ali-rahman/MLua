@@ -151,25 +151,31 @@ function isPowerofTwo(n)
 		return false
 	end
 end
-return matrix
+
+--Function for converting passed table into a matrix.
+function toMatrix(param)
+	assert((type(param)=="table"), "Input argument is not a table")
+	local m=#param
+	local n_bench=#param[1]
+	local result = matrix.new(m,n_bench)
+	local n
+	for i=1, m do
+		n=#param[i]
+		assert(n==n_bench,"Table rows have an unequal number of elements")
+		for j=1, n do
+			result.mat[i][j]=param[i][j]
+		end
+	end
+	return result
+end
+
+
+
+
 --[[
-local X=matrix.new(2,2)
-local Y=matrix.new(2,2)
-X.mat[1][1]=9
-Y.mat[2][2]=8
-Y.mat[1][1]=4
-local Z=X*Y
-local A=matrix.one(2,8)
-print("A=")
-print(A)
-local B=Z*A
-print("B=")
+local A={{2,3,4},{1,2,3},{5,6,7}}
+local B=toMatrix(1)
 print(B)
-local C=B:transpose()
-print("Matrix C:")
-print(C)
-local D=A .. B
-print("Matrix D:")
-print("Size:\t"..D.size[1].." x "..D.size[2])
-print(D)
 ]]--
+
+return matrix

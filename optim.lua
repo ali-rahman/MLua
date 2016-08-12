@@ -2,7 +2,7 @@ local optim={}
 local matrix = require "matrix"
 local cmath = require "cmath"
 
-function gradient_descent(X,target,weights,learning_rate)
+function optim.gradient_descent(X,target,weights,learning_rate)
 	local m = X.size[1]
 	local n = X.size[2]
 	local updated_weights = matrix.new(weights.size[1],weights.size[2])
@@ -13,17 +13,22 @@ function gradient_descent(X,target,weights,learning_rate)
 	updated_weights = weights - descent
 	return updated_weights
 end
-
-local X = toMatrix{{2,-1},{3,2}}
-local y = toMatrix({{14},{70}})
-local theta = toMatrix{{0},{0}}
+math.randomseed(16)
+--local X = toMatrix{{2,-1},{3,2}}
+--local y = toMatrix({{14},{70}})
+--local theta = toMatrix{{0},{0}}
+local X = matrix.random(1000,5)
+local y = matrix.random(1000,1)
+local theta = matrix.one(5,1)
 print("Weights:")
 print(theta)
 print("Iterations:")
-for i=1,220 do
-	theta = gradient_descent(X,y,theta,0.1)
-	print("Iteration #".. i)
-	print("Weights:")
-	print(theta)
+for i=1,100 do
+	theta = optim.gradient_descent(X,y,theta,0.075)
+	--print("Iteration #".. i)
+	--print("Weights:")
+	--print(theta)
 end
 
+print("Disparity:")
+print((X*theta)-y)

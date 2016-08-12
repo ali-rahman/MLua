@@ -107,6 +107,18 @@ function matrix.new(m,n)
 	end
 	return self
 end
+function  matrix.random(m,n)
+	local self=setmetatable({},matrix)
+	self.size={m,n}
+	self.mat={}
+	for i=1,m do
+		self.mat[i]={}
+		for j=1,n do
+			self.mat[i][j]=math.random()
+		end
+	end
+	return self
+end
 --Creates a matrix of m x n dimensions with all elements set to 1.
 function matrix.one(m,n)
 	local self=setmetatable({},matrix)

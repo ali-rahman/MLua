@@ -1,31 +1,5 @@
 local matrix={}
 matrix.__index = matrix
---Metamethod for overloading the + operator for our metatable
-matrix.__add = function(lhs,rhs)
-	local t_m=lhs.size[1]
-	local t_n=lhs.size[2]
-	assert((t_m==rhs.size[1] and t_n==rhs.size[2]),"Input matrices have size mismatch")
-	local sum=matrix.new(t_m,t_n)
-	for i=1,t_m do
-		for j=1,t_n do
-			sum.mat[i][j]=lhs.mat[i][j] + rhs.mat[i][j]
-		end
-	end
-	return sum
-end
---Metamethod for overloading the - operator for our metatable
-matrix.__sub = function(lhs,rhs)
-	local t_m=lhs.size[1]
-	local t_n=lhs.size[2]
-	assert((t_m==rhs.size[1] and t_n==rhs.size[2]),"Input matrices have size mismatch")
-	local sum=matrix.new(t_m,t_n)
-	for i=1,t_m do
-		for j=1,t_n do
-			sum.mat[i][j]=lhs.mat[i][j] - rhs.mat[i][j]
-		end
-	end
-	return sum
-end
 
 function matrix_scalar_multiplication(mat1,scalar)
 	local m=mat1.size[1]
@@ -37,6 +11,90 @@ function matrix_scalar_multiplication(mat1,scalar)
 		end
 	end
 	return result
+end
+
+function matrix_scalar_addition(mat1,scalar)
+	local m=mat1.size[1]
+	local n=mat1.size[2]
+	local result = matrix.new(m,n)
+	for i=1, m do
+		for j=1,n do
+			result.mat[i][j]=mat1.mat[i][j]+scalar
+		end
+	end
+	return result
+end
+function matrix_scalar_subtraction(mat1,scalar)
+	local m=mat1.size[1]
+	local n=mat1.size[2]
+	local result = matrix.new(m,n)
+	for i=1, m do
+		for j=1,n do
+			result.mat[i][j]=mat1.mat[i][j]-scalar
+		end
+	end
+	return result
+end
+
+function matrix_scalar_division(mat1,scalar)
+	local m = mat1.size[1]
+	local n = mat1.size[2]
+	local result = matrix.new(m,n)
+	for i=1, m do
+		for j=1, n do
+			result.mat[i][j] = mat1.mat[i][j]/scalar
+		end
+	end
+	return result
+end
+
+--Metamethod for overloading the + operator for our metatable
+matrix.__add = function(lhs,rhs)
+	local sum
+	if((type(lhs)=="table") and (type(rhs)=="table")) then
+		local t_m=lhs.size[1]
+		local t_n=lhs.size[2]
+		assert((t_m==rhs.size[1] and t_n==rhs.size[2]),"Input matrices have size mismatch")
+		sum=matrix.new(t_m,t_n)
+		for i=1,t_m do
+			for j=1,t_n do
+				sum.mat[i][j]=lhs.mat[i][j] + rhs.mat[i][j]
+			end
+		end
+	else
+		if(type(lhs)=="table" and type(rhs)~="table") then
+			sum=matrix.new(lhs.size[1],lhs.size[2])
+			sum=matrix_scalar_addition(lhs,rhs)
+		elseif((type(lhs)~="table") and (type(rhs)=="table")) then
+			sum=matrix.new(rhs.size[1],rhs.size[2])
+			sum=matrix_scalar_addition(rhs,lhs)
+		end
+	end
+	return sum
+end
+--Metamethod for overloading the - operator for our metatable
+matrix.__sub = function(lhs,rhs)
+	local sum
+	if((type(lhs)=="table") and (type(rhs)=="table")) then
+		local t_m=lhs.size[1]
+		local t_n=lhs.size[2]
+		assert((t_m==rhs.size[1] and t_n==rhs.size[2]),"Input matrices have size mismatch")
+		sum=matrix.new(t_m,t_n)
+		for i=1,t_m do
+			for j=1,t_n do
+				sum.mat[i][j]=lhs.mat[i][j] - rhs.mat[i][j]
+			end
+		end
+	else
+		if(type(lhs)=="table" and type(rhs)~="table") then
+			sum=matrix.new(lhs.size[1],lhs.size[2])
+			sum=matrix_scalar_subtraction(lhs,rhs)
+		elseif((type(lhs)~="table") and (type(rhs)=="table")) then
+			sum=matrix.new(rhs.size[1],rhs.size[2])
+			sum=matrix_scalar_subtraction((-1*rhs),(-1*lhs))
+		end
+	end
+	return sum
 end
 
 --Metamethod for overloading the * operator for our metatable
@@ -65,6 +123,26 @@ matrix.__mul = function(mat1,mat2)
 		elseif((type(mat1)~="table") and (type(mat2)=="table")) then
 			result=matrix.new(mat2.size[1],mat2.size[2])
 			result=matrix_scalar_multiplication(mat2,mat1)
+		end
+	end
+	return result
+end
+
+matrix.__div = function(lhs,rhs)
+	local t1 = type(lhs)
+	local t2 = type(rhs)
+	local result
+	assert(not((t1=="table") and (t2=="table")), "Division among matrices cannot be performed since matrix inversion has not been implemented.")
+	if(t1=="table" and t2~="table") then
+		result = matrix.new(lhs.size[1],lhs.size[2])
+		result = matrix_scalar_division(lhs,rhs)
+	elseif(t1~="table" and t2=="table") then
+		result = matrix.new(rhs.size[1],rhs.size[2])
+		result = matrix_scalar_division(rhs,lhs)
+		for i=1 ,result.size[1] do
+			for j=1, result.size[2] do 
+				result.mat[i][j] = math.pow(result.mat[i][j],-1)
+			end
 		end
 	end
 	return result

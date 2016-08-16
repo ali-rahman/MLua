@@ -161,5 +161,29 @@ function cmath.tan(parameter)
 		return math.tan(parameter)
 	end
 end
+function cmath.pow(parameter, power)
+	local ty= type(parameter)
+	if(ty=="table") then
+		local result =matrix.new(parameter.size[1], parameter.size[2])
+		for i=1, parameter.size[1] do
+			for j=1, parameter.size[2] do
+				result.mat[i][j] = math.pow(parameter.mat[i][j],power)
+			end
+		end
+		return result
+	else
+		return math.pow(parameter,power)
+	end
+end
+
+function cmath.sigmoid(parameter)
+	local ty = type(parameter)
+	if(ty=="table") then
+		local result = matrix.new(parameter.size[1],parameter.size[2])
+		for i=1, parameter.size[1] do
+			for j=1, parameter.size[2]
+				result.mat[i][j] = 
+
+end
 
 return cmath

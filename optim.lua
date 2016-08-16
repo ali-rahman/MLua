@@ -23,12 +23,19 @@ local theta = matrix.one(5,1)
 print("Weights:")
 print(theta)
 print("Iterations:")
-for i=1,100 do
+for i=1,10 do
 	theta = optim.gradient_descent(X,y,theta,0.075)
 	--print("Iteration #".. i)
 	--print("Weights:")
 	--print(theta)
 end
 
-print("Disparity:")
-print((X*theta)-y)
+--print("Disparity:")
+--print((X*theta)-y)
+
+local A=matrix.eye(2)
+local B = A + matrix.one(2,2)
+print(B)
+local xc =2
+print((xc/B))
+print(cmath.pow(B,-2))

@@ -33,9 +33,6 @@ end
 --print("Disparity:")
 --print((X*theta)-y)
 
-local A=matrix.eye(2)
-local B = A + matrix.one(2,2)
+local A = -100 * matrix.random(10,1)
+local B = cmath.sigmoid(A)
 print(B)
-local xc =2
-print((xc/B))
-print(cmath.pow(B,-2))

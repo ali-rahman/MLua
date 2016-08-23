@@ -178,12 +178,21 @@ end
 
 function cmath.sigmoid(parameter)
 	local ty = type(parameter)
+	local result
 	if(ty=="table") then
-		local result = matrix.new(parameter.size[1],parameter.size[2])
+		result = matrix.new(parameter.size[1],parameter.size[2])
 		for i=1, parameter.size[1] do
-			for j=1, parameter.size[2]
-				result.mat[i][j] = 
-
+			for j=1, parameter.size[2] do
+				result.mat[i][j] = cmath.exp(-1 * parameter.mat[i][j])
+			end
+		end
+		result = 1 + result
+		result = 1/result
+		return result
+	else
+		result = 1/(1+math.exp(parameter))
+		return result
+	end
 end
 
 return cmath

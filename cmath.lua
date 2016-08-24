@@ -176,6 +176,17 @@ function cmath.pow(parameter, power)
 	end
 end
 
+function cmath.sum(parameter)
+	assert(type(parameter.mat)=="table","Parameter passed needs to be a matrix")
+	local sum = matrix.new(1,parameter.size[2])
+	for j=1, sum.size[2] do
+		for i=1, sum.size[1] do
+			sum.mat[1][j] = sum.mat[1][j] + parameter.mat[i][j]
+		end
+	end
+	return sum
+end
+
 function cmath.sigmoid(parameter)
 	local ty = type(parameter)
 	local result

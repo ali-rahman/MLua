@@ -267,6 +267,18 @@ function isPowerofTwo(n)
 	end
 end
 
+--Element-wise multipliocation of two matrices
+function matrix.hadamardProduct(self, mat2)
+	assert((self.size[1]==mat2.size[1] and self.size[2]==mat2.size[2]),"Element wise multiplication requires both matrices to have equal dimensions.")
+	local result = matrix.new(self.size[1],self.size[2])
+	for i = 1,result.size[1] do
+		for j = 1,result.size[2] do
+			result.mat[i][j] = self.mat[i][j] * mat2.mat[i][j]
+		end
+	end
+	return result
+end
+
 --Function for converting passed table into a matrix.
 function toMatrix(param)
 	assert((type(param)=="table"), "Input argument is not a table")

@@ -1,6 +1,7 @@
 local optim={}
 local matrix = require "matrix"
 local cmath = require "cmath"
+local perceptron = require "perceptron"
 
 function optim.gradient_descent(X,target,weights,learning_rate)
 	local m = X.size[1]
@@ -30,23 +31,8 @@ function optim.cost_LOGISTIC(X, target, weights)
 	return sum
 end
 
-
-math.randomseed(os.time())
-local X = toMatrix{{2,-1},{3,2}}
-local y = toMatrix({{14},{70}})
-local theta = math.random(10,200) * matrix.random(2,1)
--- local X = matrix.random(1000,5)
--- local y = matrix.random(1000,1)
--- local theta = matrix.one(5,1)
-print("Weights:")
-print(theta)
-print("Iterations:")
-for i=1,50 do
-	theta = optim.gradient_descent(X,y,theta,0.075)
-	cost = optim.cost_mse(X,y,theta)
-	print("Iteration #".. i)
-	print("Cost:")
-	print (cost)
-	print("Weights:")
-	print (theta)		
-end
+math.randomseed( os.time() )
+local input = 10 * matrix.random(4,3)
+local neuron = perceptron:new(3,0,cmath.sigmoid)
+neuron.weights = matrix.random(3,1)
+local y = neuron:activate(input)

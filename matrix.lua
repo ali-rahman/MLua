@@ -7,7 +7,7 @@ function matrix_scalar_multiplication(mat1,scalar)
 	local result = matrix.new(m,n)
 	for i=1, m do
 		for j=1,n do
-			result.mat[i][j]=mat1.mat[i][j]*scalar
+			result.mat[i][j]=mat1.mat[i][j]* scalar
 		end
 	end
 	return result

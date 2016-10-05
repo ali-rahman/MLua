@@ -1,31 +1,22 @@
-local perceptron={weights = nil, bias = nil, activation_function}
---perceptron.__index = perceptron
+local neuron = {weights = nil, bias = nil, transfer_function}
 local matrix = require "matrix"
 local cmath = require "cmath"
 
-function perceptron:new(n_features, set_bias, set_activation)
+function neurom:new(n_features, set_bias, set_transfer)
 	local result ={}
 	setmetatable(result,self)
 	self.__index = self
 	self.weights = matrix.one(n_features,1)
 	self.bias = set_bias
-	self.activation_function = set_activation
+	self.transfer_function = set_transfer
 	return result
 end
 
-function perceptron:activate(X)
+function neruron:activate(X)
 	local result = (X * (self.weights)) + self.bias
 	print(self.weights)
-	local output = self.activation_function(result)
+	local output = self.transfer_function(result)
 	return output
 end
---[[
-local input = matrix.new(4,3)
-local neuron = perceptron.new(3,5,cmath.sigmoid)
 
-local y = perceptron:activate(input)
---print(type(input))
---print(type(neuron.weights))
-print(y)
-]]--
-return perceptron
+return neuron

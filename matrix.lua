@@ -185,7 +185,7 @@ function matrix.new(m,n)
 	end
 	return self
 end
-function  matrix.random(m,n)
+function matrix.random(m,n)
 	local self=setmetatable({},matrix)
 	self.size={m,n}
 	self.mat={}
@@ -279,6 +279,32 @@ function matrix.hadamardProduct(self, mat2)
 	return result
 end
 
+function matrix.invert(self)
+	assert(self.size[1]==self.size[2], "Matrix cannot be inverted")
+	local n = self.size[2]
+	local result = matrix.new(n,n)
+	local lower = matrix.new(n,n)
+	local lower_inv = matrix.new(n,n)
+	local x =matrix.new(n,1)
+	for i = 1,n do
+		for j = 1,n do
+			if(i>=j) then
+				lower.mat[i][j]=self.mat[i][j]
+			end
+		end
+	end
+	x.mat[1][1]=1/lower.mat[1][1]
+	for k=2,n do
+		local sum=0
+		for i=1,(k-1) do
+			sum = sum + (lower.mat[k][i] * x.mat[i][1])
+			x.mat[k][1] = (1-sum)/lower.mat[k][k]
+		end
+		--print(sum)
+	end
+	return x
+end
+
 --Function for converting passed table into a matrix.
 function toMatrix(param)
 	assert((type(param)=="table"), "Input argument is not a table")
@@ -297,10 +323,5 @@ function toMatrix(param)
 end
 
 
---[[
-local A={{2,3,4},{1,2,3},{5,6,7}}
-local B=toMatrix(1)
-print(B)
-]]--
 
 return matrix

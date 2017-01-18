@@ -51,20 +51,4 @@ function statistics.cov(X)
 	return cov_m
 end
 
-A = matrix.random(10,3)
-m_mean = statistics.mean(A)
-print("Mean:")
-print(m_mean)
-m_var = statistics.variance(A)
-print("Variance:")
---print(m_var)
-m_cov = statistics.covariance(A:subset({1,5},{1,1}),A:subset({1,5},{2,2}))
-print(A)
-print("Covariance:")
-print(m_cov)
-B=statistics.cov(A)
-print("Covariance Matrix")
-print(B)
-print(B.size[1].." "..B.size[2])
-
 return statistics

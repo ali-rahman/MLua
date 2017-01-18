@@ -166,7 +166,7 @@ matrix.__tostring = function(mat1)
 	local str=""
 	for i=1, mat1.size[1] do
 		for j=1, mat1.size[2] do
-			str=str .. "\t" .. mat1.mat[i][j]
+			str=str .. "\t" .. string.format("%.3f",mat1.mat[i][j])
 		end
 		str=str .. "\r" .. "\n"
 	end
@@ -303,6 +303,30 @@ function matrix.invert(self)
 		--print(sum)
 	end
 	return x
+end
+function matrix.cholesky(self)
+	local m=self.size[1]
+	local n=self.size[2]
+	local lower=matrix.new(n,n)
+	lower.mat[1][1]=math.sqrt(self.mat[1][1])
+	for i=2,n do
+		for k=1, i do
+			if(k==i) then
+				local sum=0
+				for j=1,(k-1) do
+					sum=sum+(lower.mat[k][j] * lower.mat[k][j])
+				end
+				lower.mat[k][k]=math.sqrt(self.mat[k][k]-sum)
+			else
+				local sum=0
+				for j=1,(k-1) do
+					sum=sum + (lower.mat[i][j]*lower.mat[k][j])
+				end
+				lower.mat[i][k]=(self.mat[i][k]-sum)/lower.mat[k][k]
+			end
+		end
+	end
+	return lower
 end
 
 --Function for converting passed table into a matrix.

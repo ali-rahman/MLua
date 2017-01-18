@@ -31,10 +31,9 @@ A=toMatrix({{25,15,-5},{15,18,0},{-5,0,11}})
 C=toMatrix({{18,22,54,42},{22,70,86,62},{54,86,174,134},{42,62,134,106}})
 --print(C)
 B=A:cholesky()
-print(A)
-print("Mean:")
-m_mean = statistics.cov(A)
-print(m_mean)
+print(B)
+B = statistics.cov(A)
+print(type(B.mat[1][1]))
 
 
 

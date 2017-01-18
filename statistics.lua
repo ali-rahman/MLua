@@ -40,9 +40,10 @@ function statistics.cov(X)
 	for i=1,n do
 		for j=1,n do
 			if(i==j) then
-				cov_m.mat[i][j]=statistics.variance(X:subset({1,m},{i,i}))
+				cov_m.mat[i][j]=statistics.variance(X:subset({1,m},{i,i})).mat[1][1]
+				
 			else
-				cov_m.mat[i][j]=statistics.covariance(X:subset({1,m},{i,i}), X:subset({1,m},{j,j}))
+				cov_m.mat[i][j]=statistics.covariance(X:subset({1,m},{i,i}), X:subset({1,m},{j,j})).mat[1][1]
 				cov_m.mat[j][i] = cov_m.mat[i][j]
 			end
 		end
@@ -50,25 +51,20 @@ function statistics.cov(X)
 	return cov_m
 end
 
--- A = matrix.random(10,3)
--- m_mean = statistics.mean(A)
--- print("Mean:")
--- print(m_mean)
--- m_var = statistics.variance(A)
--- print("Variance:")
--- print(m_var)
--- m_cov = statistics.covariance(A:subset({1,5},{1,1}),A:subset({1,5},{2,2}))
--- print(A)
--- print("Covariance:")
--- print(m_cov)
--- B=statistics.cov(A)
--- print("Covariance Matrix")
--- print(B.size[1].." "..B.size[2])
-
--- for i=1,3 do
--- 	print(B.mat[i][1])
--- 	print(B.mat[i][2])
--- 	print(B.mat[i][3])
--- end
+A = matrix.random(10,3)
+m_mean = statistics.mean(A)
+print("Mean:")
+print(m_mean)
+m_var = statistics.variance(A)
+print("Variance:")
+--print(m_var)
+m_cov = statistics.covariance(A:subset({1,5},{1,1}),A:subset({1,5},{2,2}))
+print(A)
+print("Covariance:")
+print(m_cov)
+B=statistics.cov(A)
+print("Covariance Matrix")
+print(B)
+print(B.size[1].." "..B.size[2])
 
 return statistics

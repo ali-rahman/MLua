@@ -166,7 +166,7 @@ matrix.__tostring = function(mat1)
 	local str=""
 	for i=1, mat1.size[1] do
 		for j=1, mat1.size[2] do
-			str=str .. "\t" .. string.format("%.3f",mat1.mat[i][j])
+			str=str .. "\t" .. string.format("%.3f", mat1.mat[i][j])
 		end
 		str=str .. "\r" .. "\n"
 	end

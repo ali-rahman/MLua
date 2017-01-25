@@ -27,3 +27,21 @@ For retrieving a sub-matrix, bounded by the column and row parameters passed:
 
     MatrixInstance:transpose()
 will return the transpose of the matrix
+
+**Matrix Addition**
+
+    local MatrixInstance_3 = MatrixInstance_1 + MatrixInstance_2
+
+**Matrix Subtraction**
+
+    local MatrixInstance_3 = MatrixInstance_1 - MatrixInstance_2
+**Matrix Multiplication**
+
+    local MatrixInstance_3 = MatrixInstance_1 * MatrixInstance_2
+
+**Element-wise Matrix Multiplication**
+Also called as Hadamard Product
+
+    local MatrixInstance_3 = MatrixInstance_1:hadamardProduct(MatrixInstance_2)
+
+will return the hadamard product of MatrixInstance_1 and MatrixInstance_2
